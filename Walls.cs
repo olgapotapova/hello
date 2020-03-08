@@ -10,7 +10,9 @@ namespace Worm
     {
         List<Figure> wallList;
 
+
         public Walls (int mapWidth, int mapHeight)
+
         {
             wallList = new List<Figure>();
             
@@ -24,6 +26,9 @@ namespace Worm
             wallList.Add(leftline);
             wallList.Add(rightline);
         }
+
+        
+
         internal bool IsHit(Figure figure)
         {
             foreach(var wall in wallList)
@@ -35,11 +40,12 @@ namespace Worm
             }
             return false;
         }
-        public void Draw()
+        public  void Draw()
         {
             foreach (var wall in wallList)
             {
-                wall.Draw();
+                //base.Drow();
+                wall.Draw(ConsoleColor.White);
             }
         }        
     }

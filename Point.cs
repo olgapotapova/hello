@@ -11,21 +11,21 @@ namespace Worm
         public int x;
         public int y;
         public char sym;
-
-        public Point( )
+        public Point()
         {
+            
+        }
+        public Point(int x, int y, char sym)
+        {
+           this.x = x;
+           this.y = y;
+           this.sym = sym;
+           //x = _x;
+           // y = _y;
+           //sym = _sym;
 
         }
 
-        public Point(int _x, int _y, char _sym)
-        {
-           // this.x = x;
-           //this.y = y;
-           // this.sym = sym;
-            x = _x;
-            y = _y;
-            sym = _sym;
-        }
         public Point(Point p)
         {
             x = p.x;
@@ -36,21 +36,22 @@ namespace Worm
 
         public void Move(int offset, Direction direction)
         {
+
             if (direction == Direction.RIGHT)
             {
-                x = x + offset;
+                x += offset;
             }
             else if (direction == Direction.LEFT)
             {
-                x = x - offset;
+                x -= offset;
             }
             else if (direction == Direction.DOWN)
             {
-                y = y + offset;
+                y += offset;
             }
             else if (direction == Direction.UP)
             {
-                y = y - offset;
+                y -= offset;
             }
         }
 
@@ -58,19 +59,49 @@ namespace Worm
         {
             return p.x == this.x && p.y == this.y;
         }
-        public void Draw()
+        public  void Draw(ConsoleColor color)
         {
-            Console.SetCursorPosition(x, y);
-            Console.Write(sym);
+            try
+            {
+                Console.SetCursorPosition(x, y);
+                Console.ForegroundColor = color;
+                Console.Write(sym);
+            }
+            catch (ArgumentOutOfRangeException)
+
+            {
+                WriteGameOver();
+                Console.ReadLine();
+            }
+            
+            
         }
+
+      
+
         public void Clear()
         {
             sym = ' ';
-            Draw();
+            Draw(ConsoleColor.DarkGreen);
         }
         public override string ToString()
         {
             return x + "," + "y" + "," + sym;
+        }
+        static void WriteGameOver()
+        {
+            int xOffset = 25;
+            int yOffset = 8;
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.SetCursorPosition(xOffset, yOffset++);
+            WriteText("И Г Р А    О К О Н Ч Е Н А", xOffset + 1, yOffset++);
+            yOffset++;
+        }
+
+        static void WriteText(String text, int xOffset, int yOffset)
+        {
+            Console.SetCursorPosition(xOffset, yOffset);
+            Console.WriteLine(text);
         }
 
 

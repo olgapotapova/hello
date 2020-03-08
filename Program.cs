@@ -1,69 +1,111 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
-using Worm;
 
 
 namespace Worm
 {
     class Program
     {
+
+
+
+        // public static readonly Worm fSerpent ;
+
+
+        // public static Worm fSeprent{ get; private set; }
+        //public class FSeprent : Worm
+
         static void Main(string[] args)
         {
             Console.SetWindowSize(80, 25);
             Walls walls = new Walls(80, 25);
             walls.Draw();
 
-            Point p = new Point(4, 5, '*');
-            Worm worm = new Worm(p, 4, Direction.RIGHT);
-            worm.Draw(ConsoleColor.Yellow);
-            Point n = new Point(14, 15, '.');
-            Serpent serpent = new Serpent(n, 6, Direction.LEFT);
-            serpent.Draw();
+
+
+            Point p1 = new Point(4, 5, '*');
+            Point p2 = new Point(44, 15, '.');
+            Point p3 = new Point(14, 25, '#');
+
+            BugCreator bugCreator = new BugCreator(80, 25, '#');
+            Point bug = bugCreator.CreateBug();
+            bug.Draw(ConsoleColor.Red);
+
+
+            Worm fWormMain = new Worm(p1, 4, Direction.RIGHT);
+            Worm fSeprent = new Worm(p2, 6, Direction.RIGHT);
+            //Draw(fWormMain);              
+            //Draw(fSeprent);
+            fWormMain.Draw(ConsoleColor.DarkGreen);
+            fSeprent.Draw(ConsoleColor.DarkBlue);
+            Worm worm = (Worm)fWormMain;
+            Worm serpent = (Worm)fSeprent;
+
+
+            List<Worm> worms = new List<Worm>();
+            worms.Add(fSeprent);
+            worms.Add(fWormMain);
+
+            /*
+            foreach (var f in worms)
+            {
+                f.HandleKey(ConsoleKey key);
+             {
+
+                }
+            }
+            static void HandleKey(Worm worm)
+            {
+                worm.HandleKey(HandleKey);
+            }*/
 
 
             FoodCreator foodCreator = new FoodCreator(80, 25, '$');
             Point food = foodCreator.CreateFood();
-            food.Draw();
+            food.Draw(ConsoleColor.Yellow);
 
             while (true)
             {
-                if ( walls.IsHit(worm) || worm.IsHitTail() || serpent.IsHitTail() )
+                if (walls.IsHit(worm) || worm.IsHitTail() || fSeprent.IsHitTail() )
                 {
                     break;
                 }
-                if (worm.Eat(food) )
+                if (worm.IsHitTail()|| worm.Death(bug))
+                {
+                    break;
+                }
+
+                if (worm.Eat(food) || fSeprent.Eat(food))
                 {
                     food = foodCreator.CreateFood();
-                    food.Draw();
+                    food.Draw(ConsoleColor.Yellow);                   
                 }
                 else
                 {
                     worm.Move();
-                    serpent.Move();
+                    // serpent.Move();
                 }
                 Thread.Sleep(200);
-                                    
+
                 if (Console.KeyAvailable)
                 {
                     ConsoleKeyInfo key = Console.ReadKey();
-                    worm.HandleKey(key.Key);
+                    fWormMain.HandleKey1(key.Key);
+                    fSeprent.HandleKey2(key.Key);
 
                 }
                 Thread.Sleep(100);
-                //worm.Move();
-                //serpent.Move();
-                if (Console.KeyAvailable)
-                {
-                    ConsoleKeyInfo key = Console.ReadKey();
-                    worm.HandleKey(key.Key);
-                    serpent.HandleKey(key.Key);
-                }
+
+                worm.Move();
+                serpent.Move();
+
             }
             WriteGameOver();
             Console.ReadLine();
         }
+
+        
 
         static void WriteGameOver()
         {
@@ -81,7 +123,9 @@ namespace Worm
             Console.WriteLine(text);
         }
 
-     
-    
+
     }
+
+
+
 }

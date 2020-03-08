@@ -11,12 +11,11 @@ namespace Worm
         protected List<Point> pList;
         
         
-         public  void Draw()
-      
+         public virtual void Draw(ConsoleColor white)     
         {
             foreach (Point p in pList )
             {
-                p.Draw();
+                p.Draw(ConsoleColor.White);
             }
            
         }
@@ -40,9 +39,7 @@ namespace Worm
             }
             return false;
          
-        }
-        public void DrawConsoleColor()
-        {
+     
 
         }
 

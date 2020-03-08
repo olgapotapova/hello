@@ -9,6 +9,7 @@ namespace Worm
     class VerticalLine : Figure
     {
 
+
         public VerticalLine(int yUp, int yDown, int x, char sym)
         {
             pList = new List<Point>();
